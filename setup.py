@@ -6,7 +6,7 @@ from distutils.core import setup
 with open("README.rst", "r", encoding="utf-8") as f:
     long_description = f.read()
 
-VERSION="0.1.9"
+VERSION="0.2.0"
 
 setup(
     name="hm3u8dl_cli",

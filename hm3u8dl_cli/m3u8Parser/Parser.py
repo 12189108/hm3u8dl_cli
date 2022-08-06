@@ -6,7 +6,7 @@ from rich.table import Table
 from rich.console import Console
 from hm3u8dl_cli import util
 from hm3u8dl_cli.decryptors import Decrypt, copyrightDRM
-from hm3u8dl_cli.decryptors_magic import xet,cctv,drm_getlicense_v1,urlmagic
+from hm3u8dl_cli.decryptors_magic import xet,cctv,drm_getlicense_v1,urlmagic,bokecc
 from hm3u8dl_cli import tsInfo,download,idm
 import hm3u8dl_cli
 
@@ -140,7 +140,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
 
             # 可用的链接
             self.args.key = drm_getlicense_v1.decrypt(self.args.key) # 腾讯云解密
-
+            self.args.key = bokecc.decrypt(self.args.key)  # bokecc解密
             self.args.key = util.Util().toBytes(self.args.key)
 
         self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成,{self.args.key}')

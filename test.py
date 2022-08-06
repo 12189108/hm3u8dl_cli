@@ -1,17 +1,13 @@
-
+import requests
 from Crypto.Cipher import AES
 import base64
 
+m3u8url = 'https://cd15-ccd1-2.play.bokecc.com/flvs/4066F9F39D08AB88/2022-08-01/E6083C59D62346630498CE5AAF1F53F5-10.m3u8?t=1659757704&key=6A647F060B6E3B350C061B94CCFF96A7&tpl=10&tpt=112' # 重载 m3u8url
+keyurl = 'https://p.bokecc.com/servlet/hlskey?info=E6083C59D62346630498CE5AAF1F53F5&t=1659757704&key=83FD7D69CFC49EC5DC87A8633A834AB9'
 
-def tencent_course(e):
-    def aes_decrypt(data, key, iv):
-        cryptor = AES.new(key=key.encode(), mode=AES.MODE_CBC, iv=iv.encode())
-        dekey = cryptor.decrypt(base64.b64decode(data))
-        return dekey.decode()
+headers = {
+    'User-Agent':'ipad'
+}
+response = requests.get(keyurl,headers=headers).content
 
-    return aes_decrypt(base64.b64encode(bytes.fromhex(e[32:-16])).decode(), e[:32], e[-16:])
-
-
-dsign = "b40ff3f1b8ff4af6a9d8e483ce26e1c3903eab0e6117d532fa70ed0a2b41d83560fc9ad90270383308ad018076f142c7ad7c4bd6ec1f466e"
-key = tencent_course(dsign)
-print(key)
+print(len(response))

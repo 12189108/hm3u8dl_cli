@@ -96,6 +96,8 @@ pycharm 中使用
 
 下载成品文件，输入命令下载
 
+`hm3u8dl_cli.zip <https://github.com/hecoter/hm3u8dl_cli/files/9274278/hm3u8dl_cli.zip>`__
+
 .. |image1| image:: https://s1.328888.xyz/2022/08/06/u6NDy.png
    :target: https://imgloc.com/i/u6NDy
 .. |image2| image:: https://s1.328888.xyz/2022/08/06/u6466.png

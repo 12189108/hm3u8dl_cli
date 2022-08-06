@@ -2,10 +2,6 @@
 
 这是一个测试版本，python 版本≥3.10
 
-
-
-
-
 ## 功能介绍
 
 解密类：
@@ -97,4 +93,6 @@ hm3u8dl_cli.exe "https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d0
 ## 使用方式-小白篇
 
 下载成品文件，输入命令下载
+
+[hm3u8dl_cli.zip](https://github.com/hecoter/hm3u8dl_cli/files/9274278/hm3u8dl_cli.zip)
 

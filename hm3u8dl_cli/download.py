@@ -69,7 +69,7 @@ class Consumer(Thread):
         if not os.path.exists(args.title):
             for i in range(self.retry_times):
                 try:
-                    response = requests.get(url=args.link, headers=args.headers, stream=True, timeout=30, verify=False,
+                    response = requests.get(url=args.link, headers=args.headers,stream=True,timeout=30, verify=False,
                                             proxies=args.proxies)
 
 
