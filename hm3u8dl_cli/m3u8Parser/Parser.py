@@ -7,7 +7,7 @@ from rich.console import Console
 from urllib.request import getproxies
 from hm3u8dl_cli import util
 from hm3u8dl_cli.decryptors import Decrypt, copyrightDRM
-from hm3u8dl_cli.decryptors_magic import xet,cctv,drm_getlicense_v1,urlmagic,bokecc
+from hm3u8dl_cli.decryptors_magic import xet,cctv,drm_getlicense_v1,urlmagic,bokecc,bjcloudvod
 from hm3u8dl_cli import tsInfo,download,idm
 import hm3u8dl_cli
 
@@ -50,7 +50,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         self.args.m3u8url = xet.decrypt(self.args.m3u8url)
         self.args.m3u8url = urlmagic.decrypt(self.args.m3u8url)
         self.args.m3u8url = cctv.decrypt(self.args.m3u8url)
-
+        self.args.m3u8url = bjcloudvod.decrypt(self.args.m3u8url)
         self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成, {json.dumps(self.args.m3u8url)}')
 
     def preload_proxy(self):
