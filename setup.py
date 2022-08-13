@@ -2,11 +2,12 @@
 # coding=utf-8
 
 from distutils.core import setup
+from hm3u8dl_cli import version
 
-with open("README.rst", "r", encoding="utf-8") as f:
+with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
-VERSION="0.2.0"
+VERSION = version.version
 
 setup(
     name="hm3u8dl_cli",
@@ -14,6 +15,7 @@ setup(
     description='m3u8视频解析，下载，解密，合并的python程序，支持全平台',
     keywords='m3u8 AES decrypt download parse',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     author='hecoter',
     author_email='hecoter12138@gmail.com',
     maintainer='hecoter',
@@ -43,4 +45,5 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Topic :: Software Development :: Libraries'
     ],
+    data_files=["README.md"]
 )

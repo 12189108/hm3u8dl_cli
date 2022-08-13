@@ -1,6 +1,6 @@
 # hm3u8dl python m3u8视频下载器
 
-这是一个测试版本，python 版本≥3.10
+这是一个测试版本，python version ≥ 3.10
 
 ## 功能介绍
 
@@ -33,7 +33,7 @@
 
 ```
 positional arguments:
-  m3u8url               链接、本地文件链接、文件夹链接
+  m3u8url               m3u8网络链接、本地文件链接、本地文件夹链接、txt文件内容
 
 options:
   -h, --help            show this help message and exit
@@ -55,44 +55,72 @@ options:
 
 
 
-## 使用方式-高级篇
+### 具体参数介绍
 
-准备：
+​	0.**m3u8url:** 支持m3u8网络链接、本地文件链接、本地文件夹链接、txt文件内容，这个一个必填内容
 
-​	1）安装python,版本≥3.10 https://www.python.org/ftp/python/3.10.6/python-3.10.6-amd64.exe 
+```
 
-​	2)	终端输入 `pip install hm3u8dl_cli` 安装此包
+```
+
+1. **method:**一般自动识别，AES-128-ECB，copyrightDRM 类型可能要自己输入
+
+   ```
+   args1.method = 'copyrightDRM'
+   ```
+
+2. **key:**支持网络链接，本地文件链接，base64格式，hex格式
+
+3. **nonce:**一个可能会用到的参数
+
+4. **enable_del：**bool 类型，默认为True
+
+   ```
+   args.enable_del = False
+   ```
+
+5. **merge_mode**: 1:二进制合并，2：二进制合并完成后用ffmpeg转码，3：用ffmpeg合并转码。默认为 `1`
+6. **work_dir:**工作目录，默认 `./Downloads`
+
+7. **proxy**：使用代理，先尝试使用系统代理，无代理的情况下才会根据输入去确定代理
+
+```
+args1.proxy = {'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
+```
 
 
 
-### pycharm 中使用
+## 下载安装
+
+### python 用户
+
+```
+pip install hm3u8dl_cli
+```
+
+在pycharm 中使用示例：
 
 ```
 from hm3u8dl_cli import args,m3u8download # 导入包
 
 args1 = args # 实例化一个参数类
-args1.m3u8url = 'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8' # 重载 m3u8url
-args1.title = '视频名称' # 重载 title
+args1.m3u8url = 'https://hls.videocc.net/672eabf526/c/672eabf526b94a9ea60c3e701be19ddc_1.m3u8'
+args1.key = 'ujIQ0DXrmywwwrGSeb/HPg=='
+args1.title = '20190213环专公开课-物理污染方向-双层壁隔声重难点解析'
 m3u8download(args1) # 传入参数类，实现下载
 ```
 
-[![u6NDy.png](https://s1.328888.xyz/2022/08/06/u6NDy.png)](https://imgloc.com/i/u6NDy)
-
-
-
-### 终端中使用
-
-在终端中输入命令 
+命令行使用示例：
 
 ```
-hm3u8dl_cli.exe "https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8" -title "视频名称" -key "kQ2aSmyG1FDSmzpqTso/0w=="
+hm3u8dl_cli "https://hls.videocc.net/672eabf526/c/672eabf526b94a9ea60c3e701be19ddc_1.m3u8" -title "20190213环专公开课-物理污染方向-双层壁隔声重难点解析" -key "ujIQ0DXrmywwwrGSeb/HPg=="
 ```
 
-[![u6466.png](https://s1.328888.xyz/2022/08/06/u6466.png)](https://imgloc.com/i/u6466)
+![命令行使用示例.png](https://pic.stackoverflow.wiki/uploadImages/58/45/21/130/2022/08/13/10/19/3e55d79c-651d-467b-9164-e501615e7843.png)
 
-## 使用方式-小白篇
+### 普通用户
 
-下载成品文件，输入命令下载
+可下载使用编译好的成品，输入以上命令使用，暂无 GUI 版本
 
-[hm3u8dl_cli.zip](https://github.com/hecoter/hm3u8dl_cli/files/9274278/hm3u8dl_cli.zip)
+[成品下载](https://github.com/hecoter/hm3u8dl_cli/releases)
 

@@ -48,7 +48,8 @@ def m3u8download(args):
 
     # 删除多余文件
     if args1.enable_del:
-        util.Util().delFile(args1._['temp_dir'])
+        if os.path.exists(args1._['temp_dir'] + '.mp4'):
+            util.Util().delFile(args1._['temp_dir'])
         if util.Util().isWidevine(args1.method):
             util.Util().delFile(args1._['temp_dir'] + '.mp4')
 
