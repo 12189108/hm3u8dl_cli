@@ -258,7 +258,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
             for args1 in infos:
 
                 hm3u8dl_cli.m3u8download(args1)
-            sys.exit()
+            return None
         #########################
 
         self.preload_method()
@@ -291,7 +291,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
             elif self.args.method == 'copyrightDRM':
                 copyrightDRM.decrypt(self.args.m3u8url,self.args.title,base64.b64encode(self.args.key).decode())
                 self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} copyrightDRM 解密完成')
-                sys.exit()
+                return None
 
         for i, segment in enumerate(self.segments):
             # 计算时长
@@ -342,7 +342,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
 
     def type_parseFile(self):
         idm.download(url=self.args.m3u8url, save_name=self.args.title)
-        sys.exit(0)
+        return None
 
     def type_parseDir(self):
         for root, dirs, files in os.walk(self.args.m3u8url):
@@ -354,7 +354,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
                         args1.m3u8url = file
                         hm3u8dl_cli.m3u8download(args1)
 
-        sys.exit(0)
+        return None
     def type_parseTXT(self):
         with open(self.args.m3u8url,'r',encoding='utf-8') as f:
             txt_contents = f.read()
@@ -370,15 +370,15 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
                 args1.key = line[2]
 
             hm3u8dl_cli.m3u8download(args1)
-        sys.exit(0)
+        return None
     # @Util().calTime
     def run(self):
         if self.args_type == list:
-            args1 = args()
+            args1 = self.args()
             for tempargs in args1:
                 print('paraser 313:',tempargs.m3u8url)
                 hm3u8dl_cli.m3u8download(tempargs)
-            sys.exit()
+            return None
         else:
             self.preload_m3u8url()
             self.preload_proxy()
