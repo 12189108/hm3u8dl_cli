@@ -1,6 +1,8 @@
 
 from argparse import ArgumentParser
-from hm3u8dl_cli import util, version, m3u8download
+
+import hm3u8dl_cli
+from hm3u8dl_cli import version, m3u8download
 
 
 def main(argv=None):
@@ -11,41 +13,41 @@ def main(argv=None):
     )
     parser.add_argument('-h', '--help')
     parser.add_argument("m3u8url", default='', help="m3u8网络链接、本地文件链接、本地文件夹链接、txt文件内容")
-    parser.add_argument("-title", default=None, help="视频名称",dest="视频名称")
-    parser.add_argument("-method", default=None, help='解密方法',dest="解密方法")
-    parser.add_argument("-key", default=None, help='key',dest='')
-    parser.add_argument("-iv", default=None, help='iv',dest='')
-    parser.add_argument("-nonce", default=None, help='nonce 可能用到的第二个key',dest='')
-    parser.add_argument("-enable_del", default=True, help='下载完删除多余文件',dest='True/False')
-    parser.add_argument("-merge_mode", default=3, help='1:二进制合并，2：二进制合并完成后用ffmpeg转码，3：用ffmpeg合并转码',dest='1/2/3')
-    parser.add_argument("-base_uri", default=None, help="解析时的baseuri",dest='')
-    parser.add_argument("-threads", default=16, help='线程数',dest='线程数')
-    parser.add_argument("-headers", default={}, help='请求头',dest='')
-    parser.add_argument("-work_dir", default='./Downloads', help='工作目录',dest='')
+    parser.add_argument("-title", default=None, help="视频名称")
+    parser.add_argument("-method", default=None, help='解密方法')
+    parser.add_argument("-key", default=None, help='key')
+    parser.add_argument("-iv", default=None, help='iv')
+    parser.add_argument("-nonce", default=None, help='nonce 可能用到的第二个key')
+    parser.add_argument("-enable_del", default=True, help='下载完删除多余文件')
+    parser.add_argument("-merge_mode", default=3, help='1:二进制合并，2：二进制合并完成后用ffmpeg转码，3：用ffmpeg合并转码')
+    parser.add_argument("-base_uri", default=None, help="解析时的baseuri")
+    parser.add_argument("-threads", default=16, help='线程数')
+    parser.add_argument("-headers", default={}, help='请求头')
+    parser.add_argument("-work_dir", default='./Downloads', help='工作目录')
     parser.add_argument("-proxy", default=None,
-                        help="代理：{'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}",dest='')
+                        help="代理：{'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}")
     Args = parser.parse_args(argv)
 
     if Args.m3u8url == '':
         parser.print_help()
         pass
     else:
-        class args:
-            m3u8url = Args.m3u8url
-            title = Args.title
-            method = Args.method
-            key = Args.key
-            iv = Args.iv
-            nonce = Args.nonce
-            enable_del = False if Args.enable_del != True else True
-            merge_mode = int(Args.merge_mode)
-            base_uri = Args.base_uri
-            headers = Args.headers
-            work_dir = Args.work_dir
-            proxy = Args.proxy
-            threads = int(Args.threads)
+        args1 = hm3u8dl_cli.args()
+        args1.m3u8url = Args.m3u8url
+        args1.title = Args.title
+        args1.method = Args.method
+        args1.key = Args.key
+        args1.iv = Args.iv
+        args1.nonce = Args.nonce
+        args1.enable_del = False if Args.enable_del != True else True
+        args1.merge_mode = int(Args.merge_mode)
+        args1.base_uri = Args.base_uri
+        args1.headers = Args.headers
+        args1.work_dir = Args.work_dir
+        args1.proxy = Args.proxy
+        args1.threads = int(Args.threads)
 
-        m3u8download(args)
+        m3u8download(args1)
 
 
 if __name__ == '__main__':

@@ -33,8 +33,7 @@ def m3u8download(args,**kwargs):
     :param args: 传入一个类或字典
     :return: None
     """
-
-    if type(args) == type or type(args) == hm3u8dl_cli.m3u8Parser.Parser.args:
+    if type(args) == type or type(args) == hm3u8dl_cli.m3u8Parser.Parser.args or type(args) == hm3u8dl_cli.args:
         pass
     elif type(args) == dict:
         args1 = hm3u8dl_cli.args()
