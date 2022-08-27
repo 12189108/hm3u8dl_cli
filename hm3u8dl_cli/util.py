@@ -202,14 +202,24 @@ class Util:
 
 
         def mp4decryptPath():
+            """
+            python 3.10支持
+            :return:
+            """
+            # match plat_form:
+            #     case 'Windows':
+            #         tools_path['mp4decrypt'] = basePath + mypath + 'mp4decrypt_win.exe'
+            #     case 'Linux':
+            #         tools_path['mp4decrypt'] = basePath + mypath + 'mp4decrypt_linux'
+            #     case 'Mac':
+            #         tools_path['mp4decrypt'] = basePath + mypath + 'mp4decrypt_mac'
 
-            match plat_form:
-                case 'Windows':
-                    tools_path['mp4decrypt'] = basePath + mypath + 'mp4decrypt_win.exe'
-                case 'Linux':
-                    tools_path['mp4decrypt'] = basePath + mypath + 'mp4decrypt_linux'
-                case 'Mac':
-                    tools_path['mp4decrypt'] = basePath + mypath + 'mp4decrypt_mac'
+            if plat_form == 'Windows':
+                tools_path['mp4decrypt'] = basePath + mypath + 'mp4decrypt_win.exe'
+            elif plat_form == 'Linux':
+                tools_path['mp4decrypt'] = basePath + mypath + 'mp4decrypt_linux'
+            elif plat_form == 'Mac':
+                tools_path['mp4decrypt'] = basePath + mypath + 'mp4decrypt_mac'
         def youkudecryptPath():
             cmd = 'youkudecrypt'
             youkudecryptInfo = subprocess.getstatusoutput(cmd)[1]

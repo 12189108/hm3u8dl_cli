@@ -1,6 +1,6 @@
 # hm3u8dl python m3u8视频下载器
 
-这是一个测试版本，python version ≥ 3.10
+python version ≥ 3.7
 
 ## 功能介绍
 
@@ -59,33 +59,88 @@ options:
 
 ​	0.**m3u8url:** 支持m3u8网络链接、本地文件链接、本地文件夹链接、txt文件内容，这个一个必填内容
 
+示例1—txt文件传入：
+
+```
+from hm3u8dl_cli import m3u8download
+m3u8url = r"C:\Users\happy\Desktop\1.txt"
+m3u8download(m3u8url)
+```
+
+​	其中文本内容：
+
+```
+"""title,m3u8url,key
+1,http://hls.cntv.kcdnvip.com/asp/hls/850/0303000a/3/default/25eb64a95f094a42bbdea5b23ae756f9/850.m3u8
+2,https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8
+"""
+```
+
+示例2—m3u8网络链接：
+
+```
+from hm3u8dl_cli import m3u8download
+info = {
+    'm3u8url':"https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8",
+    'title':'视频名称'
+}
+m3u8download(info)
 ```
 
 ```
+from hm3u8dl_cli import m3u8download
 
-1. **method:**一般自动识别，AES-128-ECB，copyrightDRM 类型可能要自己输入
+info1 = {
+    'm3u8url':"https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8",
+    'title':'视频1',
+    'enable_del':False
+}
+info2 = {
+    'm3u8url':"https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_2.m3u8",
+    'title':'视频2',
+    'threads':32 # 线程数32
+}
+infos = [info1,info2]
+m3u8download(infos)
+```
+
+当检测到大师列表时需手动输入下载序列
+
+[![GJgp6.png](https://s1.328888.xyz/2022/08/27/GJgp6.png)](https://imgloc.com/i/GJgp6)
+
+1. **method**:一般自动识别，AES-128-ECB，copyrightDRM 类型可能要自己输入
 
    ```
-   args1.method = 'copyrightDRM'
+   from hm3u8dl_cli import m3u8download
+   
+   info1 = {
+       'm3u8url':"https://***",
+       'title':'视频',
+       'method':'copyrightDRM'
+   }
+   
+   m3u8download(info1)
    ```
 
-2. **key:**支持网络链接，本地文件链接，base64格式，hex格式
+2. **key**:支持网络链接，本地文件链接，base64格式，hex格式
 
-3. **nonce:**一个可能会用到的参数
+3. **nonce**:一个可能会用到的参数
 
-4. **enable_del：**bool 类型，默认为True
+4. **enable_del**：bool 类型，默认为True
 
-   ```
-   args.enable_del = False
-   ```
-
-5. **merge_mode**: 1:二进制合并，2：二进制合并完成后用ffmpeg转码，3：用ffmpeg合并转码。默认为 `1`
-6. **work_dir:**工作目录，默认 `./Downloads`
+5. **merge_mode**: 1:二进制合并，2：二进制合并完成后用ffmpeg转码，3：用ffmpeg合并转码。默认为 `3`
+6. **work_dir**:工作目录，默认 `./Downloads`
 
 7. **proxy**：使用代理，先尝试使用系统代理，无代理的情况下才会根据输入去确定代理
 
 ```
-args1.proxy = {'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
+from hm3u8dl_cli import m3u8download
+info1 = {
+    'm3u8url':"https://***",
+    'title':'视频',
+    'proxy':{'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
+}
+m3u8download(info1)
 ```
 
 
@@ -96,18 +151,6 @@ args1.proxy = {'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
 
 ```
 pip install hm3u8dl_cli
-```
-
-在pycharm 中使用示例：
-
-```
-from hm3u8dl_cli import args,m3u8download # 导入包
-
-args1 = args # 实例化一个参数类
-args1.m3u8url = 'https://hls.videocc.net/672eabf526/c/672eabf526b94a9ea60c3e701be19ddc_1.m3u8'
-args1.key = 'ujIQ0DXrmywwwrGSeb/HPg=='
-args1.title = '20190213环专公开课-物理污染方向-双层壁隔声重难点解析'
-m3u8download(args1) # 传入参数类，实现下载
 ```
 
 命令行使用示例：

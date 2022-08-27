@@ -13,7 +13,10 @@ def tsInfo(tsPath):
 
         bitrate = re.findall('bitrate:(.+?)\n', videoInfo, re.DOTALL)[0]
 
-        resolution = re.findall('Stream(.+?)\n', videoInfo, re.DOTALL)[0].split(',')[-5:]
+        try:
+            resolution = re.findall('Stream(.+?)\n', videoInfo, re.DOTALL)[0].split(',')[-5:]
+        except:
+            resolution = ''
 
         infos = f'bitrate:{bitrate},' + ','.join(resolution)
         return infos

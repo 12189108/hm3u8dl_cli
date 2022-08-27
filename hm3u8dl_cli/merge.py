@@ -15,16 +15,26 @@ class Merge:  # 合并视频
                 if os.path.isfile(file) and file.endswith('ts'):
                     self.file_list.append(file)
         self.toolsPath = Util().toolsPath()
+        if merge_mode == 1:
+            self.mode1()
+        elif merge_mode == 2:
+            self.mode2()
+        elif merge_mode == 3:
+            self.mode3()
+        else:
+            self.mode1()
+        # python 3.10
+        # match merge_mode:
+        #     case 1:
+        #         self.mode1()
+        #     case 2:
+        #         self.mode2()
+        #     case 3:
+        #         self.mode3()
+        #     case _:
+        #         self.mode1()
 
-        match merge_mode:
-            case 1:
-                self.mode1()
-            case 2:
-                self.mode2()
-            case 3:
-                self.mode3()
-            case _:
-                self.mode1()
+
 
     def mode1(self):  # 二进制合并
         with open(self.temp_dir + '.mp4', 'ab') as f1:

@@ -11,23 +11,22 @@ from hm3u8dl_cli.decryptors_magic import xet,cctv,drm_getlicense_v1,urlmagic,bok
 from hm3u8dl_cli import tsInfo,download,idm
 import hm3u8dl_cli
 
-@staticmethod
+
 class args:
-    def __init__(self):
-        self.m3u8url = ''
-        self.title = None
-        self.method = None
-        self.key = None
-        self.iv = None
-        self.nonce = None
-        self.enable_del = True
-        self.merge_mode = 1
-        self.base_uri = None
-        self.headers = {}
-        self.work_dir = os.path.abspath('') + '/Downloads'
-        self.proxy = None
-        self.threads = 16
-        self._ = None
+    m3u8url = ''
+    title = None
+    method = None
+    key = None
+    iv = None
+    nonce = None
+    enable_del = True
+    merge_mode = 3
+    base_uri = None
+    headers = {}
+    work_dir = os.path.abspath('') + '/Downloads'
+    proxy = None
+    threads = 16
+    _ = None
 
 
 
