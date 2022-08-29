@@ -1,7 +1,5 @@
 import json
 import os
-import sys
-from argparse import ArgumentParser
 from rich import print
 
 import hm3u8dl_cli
@@ -27,7 +25,8 @@ class args:
     threads = 16
 
 
-def m3u8download(args,**kwargs):
+@hm3u8dl_cli.util.Util().safeRun
+def m3u8download(args, **kwargs):
     """ 实际开始解析下载部分
 
     :param args: 传入一个类或字典
@@ -41,7 +40,7 @@ def m3u8download(args,**kwargs):
         args1.title = args1.title if 'title' not in args else args['title']
         args1.method = args1.method if 'method' not in args else args['method']
         args1.key = args1.key if 'key' not in args else args['key']
-        args1.iv  = args1.iv if 'iv' not in args else args['iv']
+        args1.iv = args1.iv if 'iv' not in args else args['iv']
         args1.nonce = args1.nonce if 'nonce' not in args else args['nonce']
         args1.enable_del = args1.enable_del if 'enable_del' not in args else args['enable_del']
         args1.merge_mode = args1.merge_mode if 'merge_mode' not in args else args['merge_mode']
@@ -54,7 +53,6 @@ def m3u8download(args,**kwargs):
 
     elif type(args) == list:
         for arg in args:
-
             m3u8download(arg)
         return
 

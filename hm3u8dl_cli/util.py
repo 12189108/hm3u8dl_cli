@@ -1,11 +1,10 @@
 import hashlib
 import base64
-import json
-import logging
 import random
 import re,platform,os,subprocess
 import sys
 import time
+import traceback
 from ctypes import c_int
 from datetime import datetime
 
@@ -14,6 +13,7 @@ from shutil import rmtree
 
 from rich.console import Console
 from rich.table import Table
+import logging
 
 
 class Util:
@@ -343,6 +343,25 @@ class Util:
             return result
 
         return wrapper
+
+    def safeRun(self,func):
+        """ 装饰器 增加下载报错
+
+                :param func: 函数
+                :return: 函数
+                """
+
+        def wrapper(*args, **kwargs):
+            try:
+                result = func(*args, **kwargs)
+            except Exception as e:
+                print(e)
+                # traceback.print_exc()
+                result = None
+            return result
+
+        return wrapper
+
 
     def toBytes(self,text:str):
         """ 转成字节类型 from base64、hex to bytes

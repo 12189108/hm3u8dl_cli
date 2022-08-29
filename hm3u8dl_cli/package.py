@@ -24,7 +24,7 @@ def package_pyinstaller():
 
 @calTime
 def package_nuitka():
-    cmd = 'nuitka --standalone --remove-output --mingw64 --onefile --enable-plugin=multiprocessing cli.py'
+    cmd = 'nuitka --standalone --remove-output --mingw64 --onefile --enable-plugin=multiprocessing --windows-icon-from-ico=./favicon.ico cli.py'
     os.system(cmd)
 
 # package_pyinstaller()

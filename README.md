@@ -27,6 +27,8 @@ python version ≥ 3.7
 
 8. 支持 windows mac linux，全平台通用
 
+9. 支持下载出错自动跳过
+
    
 
 ## 参数介绍

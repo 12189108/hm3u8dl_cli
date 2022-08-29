@@ -17,7 +17,7 @@ def decrypt(temp_dir,key):
         command = fr'{toolsPath["mp4decrypt"]} --key 1:{key} "{before_title}" "{after_title}"'
 
         # 自行下载 mp4decrypt
-        subprocess.call(command)
+        subprocess.call(command,shell=True)
         return True
 
         # Util().delFile(before_title)

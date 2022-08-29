@@ -47,14 +47,14 @@ class Merge:  # 合并视频
     def mode2(self):  # 二进制合并，ffmpeg转码
         self.mode1()
         cmd = f'{self.toolsPath["ffmpeg"]} -i "{self.temp_dir + ".mp4"}" -c copy "{self.temp_dir + "_ffmpeg.mp4"}" -loglevel panic'
-        subprocess.call(cmd)
+        subprocess.call(cmd,shell=True)
         if os.path.exists(self.temp_dir + "_ffmpeg.mp4"):
             Util().delFile(f'{self.temp_dir + ".mp4"}')
 
     def mode3(self):  # ffmpeg 合并
         if not os.path.exists(self.temp_dir + ".mp4"):
             cmd = f'{self.toolsPath["ffmpeg"]} -loglevel panic'
-            subprocess.call(cmd)
+            subprocess.call(cmd,shell=True)
             filelist = [f"file './video/{str(i).zfill(6)}.ts'" for i in range(len(self.file_list))]
             with open(self.temp_dir + '/filelist.txt', 'w') as f:
                 for i in filelist:
@@ -67,7 +67,7 @@ class Merge:  # 合并视频
 
 def merge_video_audio(video_dir, audio_dir,output_dir):
     cmd = f'{Util().toolsPath()["ffmpeg"]} -i "{video_dir}" -i "{audio_dir}" -vcodec copy -acodec copy "{output_dir}" -loglevel panic'
-    subprocess.call(cmd)
+    subprocess.call(cmd,shell=True)
     if os.path.exists(output_dir):
         Util().delFile(video_dir)
         Util().delFile(audio_dir)
