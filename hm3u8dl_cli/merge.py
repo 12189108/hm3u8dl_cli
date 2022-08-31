@@ -20,7 +20,10 @@ class Merge:  # 合并视频
         elif merge_mode == 2:
             self.mode2()
         elif merge_mode == 3:
-            self.mode3()
+            try:
+                self.mode3()
+            except:
+                self.mode1()
         else:
             self.mode1()
         # python 3.10
@@ -62,7 +65,7 @@ class Merge:  # 合并视频
                     f.write('\n')
                 f.close()
             cmd = f'{self.toolsPath["ffmpeg"]} -f concat -safe 0 -i "{self.temp_dir + "/filelist.txt"}" -c copy "{self.temp_dir + ".mp4"}" -loglevel panic'
-            subprocess.call(cmd)
+            subprocess.call(cmd,shell=True)
 
 
 def merge_video_audio(video_dir, audio_dir,output_dir):

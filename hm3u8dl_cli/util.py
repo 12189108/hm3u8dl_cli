@@ -142,7 +142,7 @@ class Util:
         if new_title[-1] == ' ':
             new_title = new_title[:-1]
             new_title = self.titleFormat(new_title)
-        return new_title[-240:] # 最长不能超过255
+        return new_title[-128:] # 最长不能超过255
 
     def guessTitle(self,url):
         def youku():

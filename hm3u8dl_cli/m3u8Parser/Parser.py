@@ -5,6 +5,7 @@ import requests, m3u8
 from rich.table import Table
 from rich.console import Console
 from urllib.request import getproxies
+from urllib.parse import unquote,quote
 from hm3u8dl_cli import util
 from hm3u8dl_cli.decryptors import Decrypt, copyrightDRM
 from hm3u8dl_cli.decryptors_magic import xet,cctv,drm_getlicense_v1,urlmagic,bokecc,bjcloudvod
@@ -143,13 +144,15 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
 
         if self.args.key is not None:  # 自定义key
             self.args.key = util.Util().toBytes(self.args.key)
-
         else:
             self.args.key = self.m3u8obj.data['keys'][-1]['uri']
 
             # 可用的链接
-            self.args.key = drm_getlicense_v1.decrypt(self.args.key) # 腾讯云解密
-            self.args.key = bokecc.decrypt(self.args.key)  # bokecc解密
+            if type(self.args.key) == str and 'drm.vod2.myqcloud.com/getlicense/v1' in self.args.key:
+                self.args.key = drm_getlicense_v1.decrypt(self.args.key)  # 腾讯云解密
+            if type(self.args.key) == str and 'bokecc.com' in self.args.key:
+                self.args.key = bokecc.decrypt(self.args.key)  # bokecc解密
+
             self.args.key = util.Util().toBytes(self.args.key)
 
         self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成,{self.args.key}')
@@ -225,7 +228,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         return List2
 
     def type_parseM3u8(self):
-        m3u8obj = m3u8.load(self.args.m3u8url, headers=self.args.headers, verify_ssl=False,
+        m3u8obj = m3u8.load(quote(self.args.m3u8url, safe=";/?:@&=+$,", encoding="utf-8"), headers=self.args.headers, verify_ssl=False,
                             http_client=m3u8.DefaultHTTPClient(proxies=self.args.proxy))
         self.m3u8obj = self.preload_m3u8obj(m3u8obj)
         with open(self.args.work_dir + '/' + self.args.title + '/' + 'raw.m3u8', 'w', encoding='utf-8') as f:
@@ -233,23 +236,22 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         self.preload_base_uri()
         self.segments = self.m3u8obj.data['segments']
 
-
         ######################## mastelist
         if self.m3u8obj.data['playlists'] != []:
             infos = []
             print('检测到大师列表，构造链接……')
             playlists = self.m3u8obj.data['playlists']
             for playlist in playlists:
-                args1 = args()
-                args1.m3u8url = self.m3u8obj.base_uri + playlist['uri'] if playlist['uri'][:4] != 'http' else playlist['uri']
+                self.args.m3u8url = self.m3u8obj.base_uri + playlist['uri'] if playlist['uri'][:4] != 'http' else playlist['uri']
 
-                infos.append(args1)
+                infos.append(self.args)
             if self.m3u8obj.data['media'] != []:
                 medias = self.m3u8obj.data['media']
 
                 # self.base_uri_parse = '/'.join(m3u8obj.base_uri.split('/')[:-3])
                 for media in medias:
                     self.args.m3u8url = self.m3u8obj.base_uri + media['uri'] if media['uri'][:4] != 'http' else media['uri']
+
                     infos.append(self.args)
             # 加入列表选择
             infos = self.listSort(infos)
@@ -338,6 +340,13 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         }
 
         return self.args
+
+    def type_parseMPD(self):
+        """ mpd 转 m3u8 再进行下载
+
+        :return:
+        """
+        pass
 
     def type_parseFile(self):
         idm.download(url=self.args.m3u8url, save_name=self.args.title)
