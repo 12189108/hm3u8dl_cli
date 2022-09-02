@@ -27,5 +27,5 @@ def package_nuitka():
     cmd = 'nuitka --standalone --remove-output --mingw64 --onefile --enable-plugin=multiprocessing --windows-icon-from-ico=./favicon.ico cli.py'
     os.system(cmd)
 
-# package_pyinstaller()
-package_nuitka()
+package_pyinstaller()
+# package_nuitka()

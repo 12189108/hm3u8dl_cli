@@ -353,11 +353,12 @@ class Util:
 
         def wrapper(*args, **kwargs):
             try:
-                result = func(*args, **kwargs)
+                func(*args, **kwargs)
+                result = True
             except Exception as e:
                 print(e)
                 # traceback.print_exc()
-                result = None
+                result = False
             return result
 
         return wrapper

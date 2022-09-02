@@ -208,8 +208,8 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         for List in List1:
             table.add_row(
                 str(i),
-                List.title,
-                List.m3u8url,
+                List['title'],
+                List['m3u8url'],
             )
             i = i + 1
         console.print(table)
@@ -243,8 +243,22 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
             playlists = self.m3u8obj.data['playlists']
             for playlist in playlists:
                 self.args.m3u8url = self.m3u8obj.base_uri + playlist['uri'] if playlist['uri'][:4] != 'http' else playlist['uri']
+                info_temp = {
+                    'm3u8url':self.args.m3u8url,
+                    'title':self.args.title,
+                    'method':self.args.method,
+                    'key':self.args.key,
+                    'iv':self.args.iv,
+                    'nonce':self.args.nonce,
+                    'enable_del':self.args.enable_del,
+                    'merge_mode':self.args.merge_mode,
+                    'base_uri':self.args.base_uri,
+                    'headers':self.args.headers,
+                    'work_dir':self.args.work_dir,
+                    'proxy':self.args.proxy
+                }
 
-                infos.append(self.args)
+                infos.append(info_temp)
             if self.m3u8obj.data['media'] != []:
                 medias = self.m3u8obj.data['media']
 
@@ -252,7 +266,22 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
                 for media in medias:
                     self.args.m3u8url = self.m3u8obj.base_uri + media['uri'] if media['uri'][:4] != 'http' else media['uri']
 
-                    infos.append(self.args)
+                    info_temp = {
+                        'm3u8url': self.args.m3u8url,
+                        'title': self.args.title,
+                        'method': self.args.method,
+                        'key': self.args.key,
+                        'iv': self.args.iv,
+                        'nonce': self.args.nonce,
+                        'enable_del': self.args.enable_del,
+                        'merge_mode': self.args.merge_mode,
+                        'base_uri': self.args.base_uri,
+                        'headers': self.args.headers,
+                        'work_dir': self.args.work_dir,
+                        'proxy': self.args.proxy
+                    }
+
+                    infos.append(info_temp)
             # 加入列表选择
             infos = self.listSort(infos)
 
