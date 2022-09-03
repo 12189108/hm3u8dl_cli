@@ -2,7 +2,7 @@
 
 python version ≥ 3.7
 
-## 功能介绍
+## 1 功能介绍
 
 解密类：
 
@@ -31,35 +31,33 @@ python version ≥ 3.7
 
    
 
-## 参数介绍
+## 2 参数介绍
 
 ```
-positional arguments:
-  m3u8url               m3u8网络链接、本地文件链接、本地文件夹链接、txt文件内容
+必填参数:
+  m3u8url      	m3u8网络链接、本地文件链接、本地文件夹链接、txt文件内容
 
-options:
-  -h, --help            show this help message and exit
-  -title TITLE          视频名称
-  -method METHOD        解密方法
-  -key KEY              key
-  -iv IV                iv
-  -nonce NONCE          nonce 可能用到的第二个key
-  -enable_del ENABLE_DEL
-                        下载完删除多余文件
-  -merge_mode MERGE_MODE
-                        1:二进制合并，2：二进制合并完成后用ffmpeg转码，3：用ffmpeg转码
-  -base_uri BASE_URI    解析时的baseuri
-  -threads THREADS      线程数
-  -headers HEADERS      请求头
-  -work_dir WORK_DIR    工作目录
-  -proxy PROXY          代理：{'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
+非必填参数:
+  -h, --help    show this help message and exit
+  -title        视频名称
+  -method       解密方法
+  -key          key
+  -iv           iv
+  -nonce        nonce 可能用到的第二个key
+  -enable_del	下载完删除多余文件
+  -merge_mode	1:二进制合并，2：二进制合并完成后用ffmpeg转码，3：用ffmpeg转码
+  -base_uri     解析时的baseuri
+  -threads      线程数
+  -headers      请求头
+  -work_dir     工作目录
+  -proxy        代理：{'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
 ```
 
 
 
 ### 具体参数介绍
 
-​	0.**m3u8url:** 支持m3u8网络链接、本地文件链接、本地文件夹链接、txt文件内容，这个一个必填内容
+**m3u8url:** 支持m3u8网络链接、本地文件链接、本地文件夹链接、txt文件内容，这个一个必填内容
 
 示例1—txt文件传入：
 
@@ -147,13 +145,15 @@ m3u8download(info1)
 
 
 
-## 下载安装
+## 3 使用
 
 ### python 用户
 
-```
+```python
 pip install hm3u8dl_cli
 ```
+
+pip 安装hm3u8dl_cli ，在pycharm 中输入代码使用，或直接在命令行中使用
 
 命令行使用示例：
 
@@ -162,6 +162,56 @@ hm3u8dl_cli "https://hls.videocc.net/672eabf526/c/672eabf526b94a9ea60c3e701be19d
 ```
 
 ![命令行使用示例.png](https://pic.stackoverflow.wiki/uploadImages/58/45/21/130/2022/08/13/10/19/3e55d79c-651d-467b-9164-e501615e7843.png)
+
+### 有代码基础的用户
+
+可使用 `hm3u8dl_server-client` 推送使用， https://github.com/hecoter/hm3u8dl_cli/tree/main/hm3u8dl_server-client/dist 
+
+1. 打开hm3u8dl_server-client ，查看开发端口，默认为8000，被占用后会递增
+2. 向 `http://127.0.0.1:8000/info` post 信息，内容为表单 json
+3. 下载成功后会返回 True, 不成功返回 False
+
+[![kRiCr.png](https://s1.328888.xyz/2022/09/03/kRiCr.png)](https://imgloc.com/i/kRiCr)
+
+简单示例：
+
+```
+import requests
+
+data = {
+    'm3u8url':'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8'
+}
+
+res = requests.post("http://127.0.0.1:8000/info", json=data)
+print(res.json())
+```
+
+完整示例：
+
+```
+import requests
+
+data = {
+    'm3u8url':'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8',
+    'title':None,
+    'method':None,
+    'key':None,
+    'iv':None,
+    'nonce':None,
+    'enable_del':True,
+    'merge_mode':3,
+    'base_uri':None,
+    'threads':16,
+    'headers':{},
+    'work_dir':'./Downloads',
+    'proxy':None
+}
+
+res = requests.post("http://127.0.0.1:8000/info", json=data)
+print(res.json())
+```
+
+
 
 ### 普通用户
 
