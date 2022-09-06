@@ -25,9 +25,24 @@ class args:
     threads = 16
 
 
-@hm3u8dl_cli.util.Util().safeRun
+# @hm3u8dl_cli.util.Util().safeRun
 def m3u8download(args, **kwargs):
-    """ 实际开始解析下载部分
+    """ 实际开始解析下载部分,完整示例
+        info = {
+    'm3u8url':'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8',
+    'title':None,
+    'method':None,
+    'key':None,
+    'iv':None,
+    'nonce':None,
+    'enable_del':True,
+    'merge_mode':3,
+    'base_uri':None,
+    'threads':16,
+    'headers':{},
+    'work_dir':'./Downloads',
+    'proxy':None
+}
 
     :param args: 传入一个类或字典
     :return: None
@@ -75,7 +90,7 @@ def m3u8download(args, **kwargs):
 
     else:
         print('不支持的输入格式，请查阅使用文档 https://github.com/hecoter/hm3u8dl_cli')
-        return
+        return False
 
     # 解析
     args1 = Parser.Parser(args=args).run()

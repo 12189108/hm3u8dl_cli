@@ -364,7 +364,7 @@ class Util:
         return wrapper
 
 
-    def toBytes(self,text:str):
+    def toBytes(self,text:str,headers=None):
         """ 转成字节类型 from base64、hex to bytes
 
         :param text:
@@ -383,7 +383,8 @@ class Util:
             return fileToBytes
 
         elif text.startswith('http'):# 链接
-            response = requests.get(text)
+            response = requests.get(text,headers)
+
             if response.status_code == 200:
                 return response.content
             else:

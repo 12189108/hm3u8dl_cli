@@ -36,7 +36,7 @@ def range_download(url,save_name, s_pos, e_pos):
 
 
 
-def download(url,save_name=None):
+def download(url,save_name=None,headers=None):
     global FILE_SIZE
     global START_TIME
 
@@ -62,5 +62,6 @@ def download(url,save_name=None):
     print(save_name,'下载完成！')
 
 if __name__ == '__main__':
-    url = input('输入下载链接：')
+    url = input('输入下载链接：') # http://1252524126.vod2.myqcloud.com/9764a7a5vodtransgzp1252524126/80dfa52d5285890812675094126/drm/v.f100230.ts
+
     download(url)

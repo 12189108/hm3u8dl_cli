@@ -47,7 +47,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
 
     def preload_m3u8url(self):
         # self.args.m3u8url, self.args.key = huke.decrypt(self.args.m3u8url, self.args.key)
-        self.args.m3u8url = xet.decrypt(self.args.m3u8url)
+        # self.args.m3u8url = xet.decrypt(self.args.m3u8url)
         self.args.m3u8url = urlmagic.decrypt(self.args.m3u8url)
         self.args.m3u8url = cctv.decrypt(self.args.m3u8url)
         self.args.m3u8url = bjcloudvod.decrypt(self.args.m3u8url)
@@ -180,7 +180,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
     def preload_tsinfo(self):
 
         tsurl = self.segments[0]['uri']
-        self.args.ts = util.Util().toBytes(tsurl)
+        self.args.ts = util.Util().toBytes(tsurl,self.args.headers)
         self.args.ts = Decrypt(self.args)
         with open(f'{self.args.work_dir}/{self.args.title}_tsinfo.ts', 'wb') as f:
             f.write(self.args.ts)
