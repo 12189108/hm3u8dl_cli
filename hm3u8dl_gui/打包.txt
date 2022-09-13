@@ -1,0 +1,4 @@
+nuitka --standalone --remove-output --mingw64 --onefile --enable-plugin=multiprocessing --enable-plugin=pyqt6 --windows-disable-console .\password_generate_main.py
+
+
+pyuic6 .\password_generate.ui -o .\password_generate.py

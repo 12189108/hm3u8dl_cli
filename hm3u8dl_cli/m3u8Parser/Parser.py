@@ -124,6 +124,11 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
 
         if self.args.base_uri is not None:
             self.m3u8obj.base_uri = self.args.base_uri
+
+        # 再次检验base_uri
+        if self.m3u8obj.base_uri[-1] == '/' and self.m3u8obj.data['segments'][0]['uri'][0] == '/':
+            self.m3u8obj.base_uri = '/'.join(self.m3u8obj.base_uri.split('/')[:3])
+
         self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成,{json.dumps(self.m3u8obj.base_uri)}')
 
     def preload_method(self):
@@ -147,11 +152,14 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         else:
             self.args.key = self.m3u8obj.data['keys'][-1]['uri']
 
+
             # 可用的链接
             if type(self.args.key) == str and 'drm.vod2.myqcloud.com/getlicense/v1' in self.args.key:
                 self.args.key = drm_getlicense_v1.decrypt(self.args.key)  # 腾讯云解密
-            if type(self.args.key) == str and 'bokecc.com' in self.args.key:
+            elif type(self.args.key) == str and 'bokecc.com' in self.args.key:
                 self.args.key = bokecc.decrypt(self.args.key)  # bokecc解密
+            elif type(self.args.key) == str and self.args.key.count('/') > 2:
+                self.args.key = self.m3u8obj.base_uri + self.args.key
 
             self.args.key = util.Util().toBytes(self.args.key)
 
@@ -342,13 +350,16 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
             if 'http' != segment['uri'][:4]:
                 if segment['uri'][:2] == '//':
                     segment['uri'] = 'https:' + segment['uri']
+                elif self.m3u8obj.base_uri[-1] == '/' and segment['uri'][0] == '/':
+                    self.m3u8obj.base_uri = '/'.join(self.m3u8obj.base_uri.split('/')[:3])
+                    segment['uri'] = self.m3u8obj.base_uri + segment['uri']
                 else:
                     segment['uri'] = self.m3u8obj.base_uri + segment['uri']
 
                 self.segments[i]['uri'] = segment['uri']
+
             segment['title'] = str(i).zfill(6)
             self.segments[i]['title'] = segment['title']
-            # print(segment)
 
         self.preload_tsinfo()
 
