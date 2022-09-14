@@ -158,7 +158,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
                 self.args.key = drm_getlicense_v1.decrypt(self.args.key)  # 腾讯云解密
             elif type(self.args.key) == str and 'bokecc.com' in self.args.key:
                 self.args.key = bokecc.decrypt(self.args.key)  # bokecc解密
-            elif type(self.args.key) == str and self.args.key.count('/') > 2:
+            elif type(self.args.key) == str and '.key' in self.args.key:
                 self.args.key = self.m3u8obj.base_uri + self.args.key
 
             self.args.key = util.Util().toBytes(self.args.key)

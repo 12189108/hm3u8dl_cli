@@ -6,6 +6,8 @@ polyv = 'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3
 polyv_key = 'kQ2aSmyG1FDSmzpqTso/0w=='
 master = 'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a.m3u8'
 xet = 'https://1252524126.vod2.myqcloud.com/529d8d60vodtransbj1252524126/cbcde1e4387702298833985463/drm/v.f421220.m3u8'
+baseuri_url = 'https://v7.dious.cc/20220910/LgiDaGPc/1500kb/hls/index.m3u8'
+baseuri_url2 = 'http://node4.mtvideo1.xyz/csp/20211210/ZP4IMAfHap/index.m3u8'
 
 # headers_range #EXT-X-BYTERANGE:631868@0
 headers_range = 'https://y.qq.com/n/ryqq/mv/q0043ytfvmn'
