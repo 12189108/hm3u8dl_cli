@@ -27,20 +27,20 @@ class args:
 def m3u8download(args):
     """ 实际开始解析下载部分,完整示例
         info = {
-    'm3u8url':'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8',
-    'title':None,
-    'method':None,
-    'key':None,
-    'iv':None,
-    'nonce':None,
-    'enable_del':True,
-    'merge_mode':3,
-    'base_uri':None,
-    'threads':16,
-    'headers':{},
-    'work_dir':'./Downloads',
-    'proxy':None
-}
+            'm3u8url':'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8',
+            'title':None,
+            'method':None,
+            'key':None,
+            'iv':None,
+            'nonce':None,
+            'enable_del':True,
+            'merge_mode':3,
+            'base_uri':None,
+            'threads':16,
+            'headers':{},
+            'work_dir':'./Downloads',
+            'proxy':None
+            }
 
     :param args: 传入一个类或字典
     :return: None

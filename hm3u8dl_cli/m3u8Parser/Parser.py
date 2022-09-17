@@ -5,11 +5,11 @@ import requests, m3u8
 from rich.table import Table
 from rich.console import Console
 from urllib.request import getproxies
-from urllib.parse import unquote,quote
+from urllib.parse import unquote, quote
 from hm3u8dl_cli import util
 from hm3u8dl_cli.decryptors import Decrypt, copyrightDRM
-from hm3u8dl_cli.decryptors_magic import xet,cctv,drm_getlicense_v1,urlmagic,bokecc,bjcloudvod
-from hm3u8dl_cli import tsInfo,download,idm
+from hm3u8dl_cli.decryptors_magic import xet, cctv, drm_getlicense_v1, urlmagic, bokecc, bjcloudvod
+from hm3u8dl_cli import tsInfo, download, idm
 import hm3u8dl_cli
 
 
@@ -30,7 +30,6 @@ class args:
     _ = None
 
 
-
 class Parser:  # 解析m3u8内容，返回一大堆信息
     def __init__(self, args):
 
@@ -47,7 +46,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
 
     def preload_m3u8url(self):
         # self.args.m3u8url, self.args.key = huke.decrypt(self.args.m3u8url, self.args.key)
-        # self.args.m3u8url = xet.decrypt(self.args.m3u8url)
+        self.args.m3u8url = xet.decrypt(self.args.m3u8url)
         self.args.m3u8url = urlmagic.decrypt(self.args.m3u8url)
         self.args.m3u8url = cctv.decrypt(self.args.m3u8url)
         self.args.m3u8url = bjcloudvod.decrypt(self.args.m3u8url)
@@ -79,6 +78,8 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
     def preload_title(self):
         if self.args.title is None:
             self.args.title = util.Util().guessTitle(self.args.m3u8url)
+        if self.args.title.endswith('.mp4'):
+            self.args.title = self.args.title[:-4]
         self.args.title = util.Util().titleFormat(self.args.title)
         if os.path.exists(self.args.work_dir + '/' + self.args.title + '.mp4'):
             self.args.title += '_'
@@ -90,6 +91,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         toolsPath = util.Util().toolsPath()
         self.logger.info(
             f'{sys._getframe().f_code.co_name.ljust(20)}  {toolsPath}')
+
     def preload_work_dir(self):
         if not os.path.exists(self.temp_dir):
             os.makedirs(self.temp_dir)
@@ -152,7 +154,6 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         else:
             self.args.key = self.m3u8obj.data['keys'][-1]['uri']
 
-
             # 可用的链接
             if type(self.args.key) == str and 'drm.vod2.myqcloud.com/getlicense/v1' in self.args.key:
                 self.args.key = drm_getlicense_v1.decrypt(self.args.key)  # 腾讯云解密
@@ -170,7 +171,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
             self.args.iv = util.Util().toBytes(self.args.iv)
         else:
             if self.m3u8obj.data['keys'] == [None] or self.args.iv is None:
-                self.args.iv = bytes([0]*16)
+                self.args.iv = bytes([0] * 16)
             elif 'iv' in self.m3u8obj.data['keys'][-1]:
                 self.args.iv = self.m3u8obj.data['keys'][-1]['iv']
             elif 'keyid' in self.m3u8obj.data['keys'][-1]:
@@ -188,7 +189,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
     def preload_tsinfo(self):
 
         tsurl = self.segments[0]['uri']
-        self.args.ts = util.Util().toBytes(tsurl,self.args.headers)
+        self.args.ts = util.Util().toBytes(tsurl, self.args.headers)
         self.args.ts = Decrypt(self.args)
         with open(f'{self.args.work_dir}/{self.args.title}_tsinfo.ts', 'wb') as f:
             f.write(self.args.ts)
@@ -200,7 +201,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成,{self.tsinfo}')
         return self.tsinfo
 
-    def listSort(self,List1):
+    def listSort(self, List1):
         table = Table()
         console = Console(color_system='256', style=None)
         List2 = []
@@ -236,8 +237,15 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         return List2
 
     def type_parseM3u8(self):
-        m3u8obj = m3u8.load(quote(self.args.m3u8url, safe=";/?:@&=+$,", encoding="utf-8"), headers=self.args.headers, verify_ssl=False,
-                            http_client=m3u8.DefaultHTTPClient(proxies=self.args.proxy))
+        if os.path.isfile(self.args.m3u8url):
+            m3u8obj = m3u8.load(self.args.m3u8url, headers=self.args.headers,
+                                verify_ssl=False,
+                                http_client=m3u8.DefaultHTTPClient(proxies=self.args.proxy))
+        else:
+
+            m3u8obj = m3u8.load(quote(self.args.m3u8url, safe=";/?:@&=+$,", encoding="utf-8"),
+                                headers=self.args.headers, verify_ssl=False,
+                                http_client=m3u8.DefaultHTTPClient(proxies=self.args.proxy))
         self.m3u8obj = self.preload_m3u8obj(m3u8obj)
         with open(self.args.work_dir + '/' + self.args.title + '/' + 'raw.m3u8', 'w', encoding='utf-8') as f:
             f.write(self.m3u8obj.dumps())
@@ -250,20 +258,21 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
             print('检测到大师列表，构造链接……')
             playlists = self.m3u8obj.data['playlists']
             for playlist in playlists:
-                self.args.m3u8url = self.m3u8obj.base_uri + playlist['uri'] if playlist['uri'][:4] != 'http' else playlist['uri']
+                self.args.m3u8url = self.m3u8obj.base_uri + playlist['uri'] if playlist['uri'][:4] != 'http' else \
+                playlist['uri']
                 info_temp = {
-                    'm3u8url':self.args.m3u8url,
-                    'title':self.args.title,
-                    'method':self.args.method,
-                    'key':self.args.key,
-                    'iv':self.args.iv,
-                    'nonce':self.args.nonce,
-                    'enable_del':self.args.enable_del,
-                    'merge_mode':self.args.merge_mode,
-                    'base_uri':self.args.base_uri,
-                    'headers':self.args.headers,
-                    'work_dir':self.args.work_dir,
-                    'proxy':self.args.proxy
+                    'm3u8url': self.args.m3u8url,
+                    'title': self.args.title,
+                    'method': self.args.method,
+                    'key': self.args.key,
+                    'iv': self.args.iv,
+                    'nonce': self.args.nonce,
+                    'enable_del': self.args.enable_del,
+                    'merge_mode': self.args.merge_mode,
+                    'base_uri': self.args.base_uri,
+                    'headers': self.args.headers,
+                    'work_dir': self.args.work_dir,
+                    'proxy': self.args.proxy
                 }
 
                 infos.append(info_temp)
@@ -272,7 +281,8 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
 
                 # self.base_uri_parse = '/'.join(m3u8obj.base_uri.split('/')[:-3])
                 for media in medias:
-                    self.args.m3u8url = self.m3u8obj.base_uri + media['uri'] if media['uri'][:4] != 'http' else media['uri']
+                    self.args.m3u8url = self.m3u8obj.base_uri + media['uri'] if media['uri'][:4] != 'http' else media[
+                        'uri']
 
                     info_temp = {
                         'm3u8url': self.args.m3u8url,
@@ -294,7 +304,6 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
             infos = self.listSort(infos)
 
             for args1 in infos:
-
                 hm3u8dl_cli.m3u8download(args1)
             return None
         #########################
@@ -316,7 +325,8 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
                     init_content = requests.get(init).content
                     f.write(init_content)
                     f.close()
-                self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} SAMPLE-AES-CTR 文件头下载完成,{init_content}')
+                self.logger.info(
+                    f'{sys._getframe().f_code.co_name.ljust(20)} SAMPLE-AES-CTR 文件头下载完成,{init_content}')
 
             elif self.args.method == 'SAMPLE-AES':
                 init = self.segments[0]['init_section']['uri']
@@ -327,7 +337,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
                 self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} SAMPLE-AES 文件头下载完成,{init_content}')
 
             elif self.args.method == 'copyrightDRM':
-                copyrightDRM.decrypt(self.args.m3u8url,self.args.title,base64.b64encode(self.args.key).decode())
+                copyrightDRM.decrypt(self.args.m3u8url, self.args.title, base64.b64encode(self.args.key).decode())
                 self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} copyrightDRM 解密完成')
                 return None
 
@@ -340,8 +350,8 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
                 startByte = int(segment['byterange'].split('@')[1])
                 expectByte = int(segment['byterange'].split('@')[0])
                 self.headers_range.append({
-                    'Range':f"bytes={startByte}-{startByte + expectByte}",
-                    'User-Agent':util.Util().randomUA()
+                    'Range': f"bytes={startByte}-{startByte + expectByte}",
+                    'User-Agent': util.Util().randomUA()
                 }
                 )
                 # print(f"bytes={startByte}-{startByte + expectByte}")
@@ -376,7 +386,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
             'segments': self.segments,
             'logger': self.logger,
             'm3u8obj': self.m3u8obj,
-            'headers_range':self.headers_range
+            'headers_range': self.headers_range
         }
 
         return self.args
@@ -403,28 +413,33 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
                         hm3u8dl_cli.m3u8download(args1)
 
         return None
+
     def type_parseTXT(self):
-        with open(self.args.m3u8url,'r',encoding='utf-8') as f:
+        with open(self.args.m3u8url, 'r', encoding='utf-8') as f:
             txt_contents = f.read()
             f.close()
         contents = txt_contents.split('\n')
 
         for content in contents:
-            args1 = args()
-            line = content.split(',')
-            args1.title = line[0]
-            args1.m3u8url = line[1]
-            if len(line) == 3:
-                args1.key = line[2]
+            try:
+                args1 = args()
+                line = content.split(',')
+                args1.title = line[0]
+                args1.m3u8url = line[1]
+                if len(line) == 3:
+                    args1.key = line[2]
 
-            hm3u8dl_cli.m3u8download(args1)
+                hm3u8dl_cli.m3u8download(args1)
+            except:
+                pass
         return None
+
     # @Util().calTime
     def run(self):
         if self.args_type == list:
             args1 = self.args()
             for tempargs in args1:
-                print('paraser 313:',tempargs.m3u8url)
+                print('paraser 313:', tempargs.m3u8url)
                 hm3u8dl_cli.m3u8download(tempargs)
             return None
         else:
@@ -436,6 +451,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
             self.temp_dir = self.args.work_dir + '/' + self.args.title
             self.preload_work_dir()
             # 解析m3u8文件
+
             if '.mp4' in self.args.m3u8url and 'm3u8' not in self.args.m3u8url:
                 self.type_parseFile()
             elif os.path.isdir(self.args.m3u8url):

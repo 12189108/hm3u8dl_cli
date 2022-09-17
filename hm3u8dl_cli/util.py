@@ -195,6 +195,7 @@ class Util:
         def ffmpegPath():
             cmd = 'ffmpeg'
             ffmpegInfo = subprocess.getstatusoutput(cmd)[1]
+
             if '不是内部或外部命令' not in ffmpegInfo: # 环境中ffmpeg
                 tools_path['ffmpeg'] = 'ffmpeg'
             else:
