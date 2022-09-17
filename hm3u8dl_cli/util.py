@@ -384,10 +384,17 @@ class Util:
             return fileToBytes
 
         elif text.startswith('http'):# 链接
-            response = requests.get(text,headers)
+            response = requests.get(text,headers,allow_redirects=False)
 
             if response.status_code == 200:
                 return response.content
+            elif response.status_code == 302:
+                if 'Location' in response.headers:
+                    Location_url = response.headers['Location']
+                    Location_url = Location_url.replace('///','//')
+                    return self.toBytes(Location_url,headers=headers)
+                else:
+                    return text
             else:
                 print('Maybe the key is wrong.')
                 return text

@@ -189,8 +189,10 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
     def preload_tsinfo(self):
 
         tsurl = self.segments[0]['uri']
+
         self.args.ts = util.Util().toBytes(tsurl, self.args.headers)
         self.args.ts = Decrypt(self.args)
+
         with open(f'{self.args.work_dir}/{self.args.title}_tsinfo.ts', 'wb') as f:
             f.write(self.args.ts)
             f.close()

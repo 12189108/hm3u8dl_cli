@@ -70,7 +70,15 @@ class Consumer(Thread):
             for i in range(self.retry_times):
                 try:
                     response = requests.get(url=args.link, headers=args.headers,stream=True,timeout=30, verify=False,
-                                            proxies=args.proxies)
+                                            proxies=args.proxies,allow_redirects=False)
+                    # 适配需重定向才能得到链接的网站
+                    if response.status_code == 302:
+                        if 'Location' in response.headers:
+                            Location_url = response.headers['Location']
+                            Location_url = Location_url.replace('///', '//')
+                            response = requests.get(url=Location_url, headers=args.headers, stream=True, timeout=30,
+                                                    verify=False,
+                                                    proxies=args.proxies, allow_redirects=False)
 
 
                     args.ts = response.content

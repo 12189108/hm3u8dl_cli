@@ -7,7 +7,7 @@ def decrypt(m3u8url:str) -> str:
     :param m3u8url: 传入m3u8/ts链接
     :return: 不加密的链接
     """
-    replace_header = ['encrypt-k-vod.xet.tech']
+    replace_header = ['encrypt-k-vod.xet.tech','1252524126.vod2.myqcloud.com']
     # true_header = '1252524126.vod2.myqcloud.com'
     true_header = 'live-video-tx.xiaoeknow.com'
     for i in replace_header:
