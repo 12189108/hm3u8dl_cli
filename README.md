@@ -1,6 +1,6 @@
 # hm3u8dl python m3u8视频下载器
 
-python version ≥ 3.7
+python version ≥ 3.9
 
 ## 1 功能介绍
 
@@ -55,167 +55,16 @@ python version ≥ 3.7
 
 
 
-### 具体参数介绍
-
-**m3u8url:** 支持m3u8网络链接、本地文件链接、本地文件夹链接、txt文件内容，这个一个必填内容
-
-示例1—txt文件传入：
-
-```
-from hm3u8dl_cli import m3u8download
-m3u8url = r"C:\Users\happy\Desktop\1.txt"
-m3u8download(m3u8url)
-```
-
-​	其中文本内容：
-
-```
-"""title,m3u8url,key
-1,http://hls.cntv.kcdnvip.com/asp/hls/850/0303000a/3/default/25eb64a95f094a42bbdea5b23ae756f9/850.m3u8
-2,https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8
-"""
-```
-
-示例2—m3u8网络链接：
-
-```
-from hm3u8dl_cli import m3u8download
-info = {
-    'm3u8url':"https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8",
-    'title':'视频名称'
-}
-m3u8download(info)
-```
-
-```
-from hm3u8dl_cli import m3u8download
-
-info1 = {
-    'm3u8url':"https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8",
-    'title':'视频1',
-    'enable_del':False
-}
-info2 = {
-    'm3u8url':"https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_2.m3u8",
-    'title':'视频2',
-    'threads':32 # 线程数32
-}
-infos = [info1,info2]
-m3u8download(infos)
-```
-
-当检测到大师列表时需手动输入下载序列
-
-[![GJgp6.png](https://s1.328888.xyz/2022/08/27/GJgp6.png)](https://imgloc.com/i/GJgp6)
-
-1. **method**:一般自动识别，AES-128-ECB，copyrightDRM 类型可能要自己输入
-
-   ```
-   from hm3u8dl_cli import m3u8download
-   
-   info1 = {
-       'm3u8url':"https://***",
-       'title':'视频',
-       'method':'copyrightDRM'
-   }
-   
-   m3u8download(info1)
-   ```
-
-2. **key**:支持网络链接，本地文件链接，base64格式，hex格式
-
-3. **nonce**:一个可能会用到的参数
-
-4. **enable_del**：bool 类型，默认为True
-
-5. **merge_mode**: 1:二进制合并，2：二进制合并完成后用ffmpeg转码，3：用ffmpeg合并转码。默认为 `3`
-6. **work_dir**:工作目录，默认 `./Downloads`
-
-7. **proxy**：使用代理，先尝试使用系统代理，无代理的情况下才会根据输入去确定代理
-
-```
-from hm3u8dl_cli import m3u8download
-info1 = {
-    'm3u8url':"https://***",
-    'title':'视频',
-    'proxy':{'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
-}
-m3u8download(info1)
-```
-
-
-
 ## 3 使用
 
-### python 用户
-
-```python
-pip install hm3u8dl_cli
+```
+pip install --upgrade hm3u8dl_cli
 ```
 
-pip 安装hm3u8dl_cli ，在pycharm 中输入代码使用，或直接在命令行中使用
-
-命令行使用示例：
-
 ```
-hm3u8dl_cli "https://hls.videocc.net/672eabf526/c/672eabf526b94a9ea60c3e701be19ddc_1.m3u8" -title "20190213环专公开课-物理污染方向-双层壁隔声重难点解析" -key "ujIQ0DXrmywwwrGSeb/HPg=="
+m3u8download('https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8',title='132')
 ```
 
-![命令行使用示例.png](https://pic.stackoverflow.wiki/uploadImages/58/45/21/130/2022/08/13/10/19/3e55d79c-651d-467b-9164-e501615e7843.png)
+完成下载！
 
-### 有代码基础的用户
-
-可使用 `hm3u8dl_server-client` 推送使用， https://github.com/hecoter/hm3u8dl_cli/tree/main/hm3u8dl_server-client/dist 
-
-1. 打开hm3u8dl_server-client ，查看开发端口，默认为8000，被占用后会递增
-2. 向 `http://127.0.0.1:8000/info` post 信息，内容为表单 json
-3. 下载成功后会返回 True, 不成功返回 False
-
-[![kRiCr.png](https://s1.328888.xyz/2022/09/03/kRiCr.png)](https://imgloc.com/i/kRiCr)
-
-简单示例：
-
-```
-import requests
-
-data = {
-    'm3u8url':'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8'
-}
-
-res = requests.post("http://127.0.0.1:8000/info", json=data)
-print(res.json())
-```
-
-完整示例：
-
-```
-import requests
-
-data = {
-    'm3u8url':'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8',
-    'title':None,
-    'method':None,
-    'key':None,
-    'iv':None,
-    'nonce':None,
-    'enable_del':True,
-    'merge_mode':3,
-    'base_uri':None,
-    'threads':16,
-    'headers':{},
-    'work_dir':'./Downloads',
-    'proxy':None
-}
-
-res = requests.post("http://127.0.0.1:8000/info", json=data)
-print(res.json())
-```
-
-
-
-### 普通用户
-
-可下载使用编译好的成品，输入以上命令使用，暂无 GUI 版本
-
-[成品下载](https://github.com/hecoter/hm3u8dl_cli/releases)
-
+另可参照2中参数摸索使用

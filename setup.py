@@ -7,7 +7,7 @@ from hm3u8dl_cli import version
 with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
-VERSION = version.version
+VERSION = version
 
 setup(
     name="hm3u8dl_cli",
@@ -24,7 +24,7 @@ setup(
     packages=["hm3u8dl_cli"],
 
     install_requires=[
-        "m3u8","pycryptodome","tqdm","retry","tornado","rich","requests"
+        "m3u8","pycryptodome","tqdm","retry","tornado","rich","requests","multiprocess"
     ],
     platforms=["all"],
     url='https://github.com/hecoter/hm3u8dl_cli',
@@ -41,8 +41,6 @@ setup(
         'Operating System :: OS Independent',
         'Intended Audience :: Developers',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
