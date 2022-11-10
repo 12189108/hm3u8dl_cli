@@ -41,7 +41,7 @@ class Util:
         if not os.path.exists('./logs'):
             os.makedirs('logs')
         logging.basicConfig(filename=log_name, format='%(asctime)s %(message)s', datefmt='%Y/%m/%d %I:%M:%S',
-                            level=logging.DEBUG, encoding='utf-8', errors=None)
+                            level=logging.DEBUG)
         logging.info('hm3u8dl LOG 写入')
         return logging.getLogger(__name__)
 
@@ -506,7 +506,7 @@ class Util:
     @classmethod
     def checkVersion(cls):
         # 判断Python版本
-        if sys.version_info >= (3, 9):
+        if sys.version_info >= (3, 7):
             return True
         else:
             return False

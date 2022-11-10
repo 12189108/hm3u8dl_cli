@@ -1,6 +1,6 @@
 # hm3u8dl python m3u8视频下载器
 
-python version ≥ 3.9
+python version ≥ 3.7
 
 ## 1 功能介绍
 
