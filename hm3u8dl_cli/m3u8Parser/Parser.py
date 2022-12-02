@@ -5,7 +5,7 @@ import requests, m3u8
 from rich.table import Table
 from rich.console import Console
 from urllib.request import getproxies
-from urllib.parse import unquote, quote
+from urllib.parse import unquote, quote_plus
 from multiprocessing import cpu_count
 
 import hm3u8dl_cli.m3u8download
@@ -16,7 +16,9 @@ from hm3u8dl_cli.idm import download as idm_download
 
 from hm3u8dl_cli.decryptors_magic import *
 from hm3u8dl_cli.decryptors import Decrypt,copyrightDRM_decrypt
+import urllib3
 
+urllib3.disable_warnings()
 
 class Parser:  # 解析m3u8内容，返回一大堆信息
     def __init__(self, m3u8InfoObj):
@@ -48,11 +50,9 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         :return:
         """
         try:
-            self.m3u8InfoObj.proxy = getproxies()['http']
+            self.m3u8InfoObj.proxy = getproxies()
         except:
-            if type(self.m3u8InfoObj.proxy) == str:
-                self.m3u8InfoObj.proxy = {'http': self.m3u8InfoObj.proxy}
-            elif type(self.m3u8InfoObj.proxy) == dict:
+            if type(self.m3u8InfoObj.proxy) == dict:
                 self.m3u8InfoObj.proxy = self.m3u8InfoObj.proxy
             else:
                 self.m3u8InfoObj.proxy = None
@@ -118,17 +118,22 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
             self.m3u8obj.base_uri = self.m3u8InfoObj.base_uri
 
         # 再次检验base_uri
-        if self.m3u8obj.base_uri[-1] == '/' and self.m3u8obj.data['segments'] != [] and  self.m3u8obj.data['segments'][0]['uri'][0] == '/':
-            self.m3u8obj.base_uri = '/'.join(self.m3u8obj.base_uri.split('/')[:3])
+        try:
+            if self.m3u8obj.base_uri[-1] == '/' and self.m3u8obj.data['segments'] != [] and \
+                    self.m3u8obj.data['segments'][0]['uri'][0] == '/':
+                self.m3u8obj.base_uri = '/'.join(self.m3u8obj.base_uri.split('/')[:3])
+        except:
+            pass
 
         self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成,{json.dumps(self.m3u8obj.base_uri)}')
 
     def preload_method(self):
-        if self.m3u8InfoObj.method != None:  # 自定义method
+
+        if self.m3u8InfoObj.method is not None:  # 自定义method
             pass
         else:  # 自动判断method
 
-            if self.m3u8obj.data['keys'] == []:
+            if not self.m3u8obj.data['keys']:
                 self.m3u8InfoObj.method = None
             elif self.m3u8obj.data['keys'][-1] is None:
                 self.m3u8InfoObj.method = None
@@ -183,9 +188,9 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
 
         self.m3u8InfoObj.ts = Util.toBytes(tsurl, self.m3u8InfoObj.headers)
         self.m3u8InfoObj.ts = Decrypt(self.m3u8InfoObj)
-
+        if type(self.m3u8InfoObj.ts) != bytes:
+            raise '分片预加载错误'
         with open(f'{self.m3u8InfoObj.work_dir}/{self.m3u8InfoObj.title}_tsinfo.ts', 'wb') as f:
-
             f.write(self.m3u8InfoObj.ts)
             f.close()
         del self.m3u8InfoObj.ts
@@ -243,11 +248,11 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
 
 
             try:
-                m3u8obj = m3u8.load(quote(self.m3u8InfoObj.m3u8url, safe=";/?:@&=+$,", encoding="utf-8"),
+                m3u8obj = m3u8.load(self.m3u8InfoObj.m3u8url,
                                     headers=self.m3u8InfoObj.headers, verify_ssl=False,
                                     http_client=m3u8.DefaultHTTPClient(proxies=self.m3u8InfoObj.proxy))
             except:
-                m3u8content = requests.get(quote(self.m3u8InfoObj.m3u8url, safe=";/?:@&=+$,", encoding="utf-8"),headers=self.m3u8InfoObj.headers, verify=False).text
+                m3u8content = requests.get(self.m3u8InfoObj.m3u8url,headers=self.m3u8InfoObj.headers, verify=False,proxies=self.m3u8InfoObj.proxy).text
                 # 阿里云method自动判断
                 if 'MEATHOD' in m3u8content:
                     self.m3u8InfoObj.method = 'AES-128-ECB'
@@ -322,7 +327,6 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         #########################
 
         self.preload_method()
-
         if self.m3u8InfoObj.method:
             self.preload_key()
             self.preload_iv()

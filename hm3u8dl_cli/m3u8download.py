@@ -9,6 +9,9 @@ from .m3u8Parser import parse,download_infos
 from .merge import Merge
 
 from .decryptors import Widevine_decrypt
+import urllib3
+
+urllib3.disable_warnings()
 
 # @Util.safeRun
 def m3u8download(
@@ -41,7 +44,7 @@ def m3u8download(
     :param base_uri:
     :param headers: dict格式，{}
     :param work_dir:
-    :param proxy: {'https:':'127.0.0.1:8000','http:'127.0.0.1:8000'}
+    :param proxy: {'http': 'http://127.0.0.1:8080', 'https': 'https://127.0.0.1:8080', 'ftp': 'ftp://127.0.0.1:8080'}
     :param threads: 系统cpu核数
     :return: False/True
     """

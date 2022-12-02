@@ -1,5 +1,7 @@
 import time
 from rich import print
+from tqdm import tqdm
+
 from hm3u8dl_cli.util import Util
 
 def process_bar(all_count:int, done_count:int, down_size:int, start_time:float):
@@ -25,6 +27,15 @@ def process_bar(all_count:int, done_count:int, down_size:int, start_time:float):
     print(percent,done_bar,rest_bar,speed,eta,end='\r')
 
 
+def process_bar_tqdm(all_count:int, done_count:int, down_size:int, start_time:float):
+    """ 进度条
 
-
+    :param all_count: ts总数
+    :param done_count: 已下载ts数
+    :param down_size: 已下载大小
+    :param start_time: 下载开始时间
+    :return: None
+    """
+    with tqdm(total=all_count, desc='Example', leave=False, unit='B', unit_scale=True) as pbar:
+        pbar.update(done_count)
 

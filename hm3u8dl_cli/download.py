@@ -5,11 +5,15 @@ import requests
 from threading import Thread
 from queue import Queue
 import time
+from tqdm import tqdm
 
 from hm3u8dl_cli.decryptors import Decrypt
-from hm3u8dl_cli.processBar import process_bar
+from hm3u8dl_cli.util import Util
+from hm3u8dl_cli.processBar import process_bar,process_bar_tqdm
+
 warnings.filterwarnings("ignore")
 requests.packages.urllib3.disable_warnings()
+
 q = Queue(100000)
 time_start = time.time()
 ALL_COUNT = 0
@@ -34,9 +38,18 @@ class FastRequests:
             t = Consumer()
             t.start()
 
-        while DONE_COUNT < ALL_COUNT:
-            time.sleep(0.01)
-
+        # tqdm 版简略进度条
+        with tqdm(total=ALL_COUNT, desc='', leave=False, unit='个', unit_scale=True,) as pbar:
+            while DONE_COUNT < ALL_COUNT:
+                current_p = pbar.n
+                end_time = time.time()
+                speed = f'{Util.sizeFormat(DONE_SIZE / (end_time - time_start))}/s'
+                pbar.set_postfix_str(speed)
+                pbar.update(DONE_COUNT -current_p)
+                time.sleep(0.01)
+            pbar.leave = True
+            current_p = pbar.n
+            pbar.update(ALL_COUNT - current_p)
         # 下载完后初始化缓存信息
         ALL_COUNT = 0
         DONE_COUNT = 0
@@ -103,7 +116,7 @@ class Consumer(Thread):
                 except requests.exceptions.RequestException as e:
                     continue
         DONE_COUNT += 1
-        process_bar(ALL_COUNT,DONE_COUNT,DONE_SIZE,time_start)
+        # process_bar(ALL_COUNT,DONE_COUNT,DONE_SIZE,time_start)
         # 上传进度信息
         if args.server:
             data = {
