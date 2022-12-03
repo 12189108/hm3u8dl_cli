@@ -33,7 +33,7 @@ python version ≥ 3.7
 
 9. 随机请求头
 
-9. GUI 已在计划中
+9. GUI 版本正在测试
 
    
 
@@ -59,9 +59,21 @@ python version ≥ 3.7
   -proxy        代理：{'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
 ```
 
+## 3 GUI 版使用
 
+按照界面提示输入即可
 
-## 3 使用
+<img src="https://raw.githubusercontent.com/hecoter/blog/main/imags/QQ%E6%88%AA%E5%9B%BE20221203194411.png" style="zoom:50%;" />
+
+<img src="C:\Users\hecot\Desktop\QQ截图20221203194424.png" alt="QQ截图20221203194424" style="zoom:50%;" />
+
+<img src="C:\Users\hecot\Desktop\QQ截图20221203194430.png" alt="QQ截图20221203194430" style="zoom:50%;" />
+
+<img src="C:\Users\hecot\Desktop\QQ截图20221203194445.png" alt="QQ截图20221203194445" style="zoom:50%;" />
+
+<img src="C:\Users\hecot\Desktop\QQ截图20221203194649.png" alt="QQ截图20221203194649" style="zoom:50%;" />
+
+## 4 CLI版 使用
 
 ```
 pip install --upgrade hm3u8dl_cli
@@ -230,8 +242,8 @@ from hm3u8dl_cli.util import M3U8InfoObj
 m3u8InfoObj = M3U8InfoObj()
 
 m3u8InfoObj.m3u8url = 'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8'
-m3u8InfoObj.proxy = {'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
-# m3u8InfoObj.proxy = {'http': "socks5://127.0.0.1:8080",'https': "socks5://127.0.0.1:8080"}
+m3u8InfoObj.proxy = {'http': 'http://127.0.0.1:8080', 'https': 'https://127.0.0.1:8080', 'ftp': 'ftp://127.0.0.1:8080'}
+# m3u8InfoObj.proxy = {'http': 'http://127.0.0.1:8080', 'https': 'https://127.0.0.1:8080', 'ftp': 'ftp://127.0.0.1:8080'}
 
 m3u8download(m3u8InfoObj)
 ```
