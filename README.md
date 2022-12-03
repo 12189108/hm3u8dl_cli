@@ -69,13 +69,23 @@ python version ≥ 3.7
 
 <img src="https://raw.githubusercontent.com/hecoter/blog/main/imags/QQ%E6%88%AA%E5%9B%BE20221203194411.png" style="zoom:50%;" />
 
-<img src="C:\Users\hecot\Desktop\QQ截图20221203194424.png" alt="QQ截图20221203194424" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/hecoter/blog/main/imags/QQ%E6%88%AA%E5%9B%BE20221203194424.png" style="zoom:50%;" />
+
+
+
+
+
+
 
 <img src="C:\Users\hecot\Desktop\QQ截图20221203194430.png" alt="QQ截图20221203194430" style="zoom:50%;" />
 
-<img src="C:\Users\hecot\Desktop\QQ截图20221203194445.png" alt="QQ截图20221203194445" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/hecoter/blog/main/imags/QQ%E6%88%AA%E5%9B%BE20221203194430.png" style="zoom:50%;" />
 
-<img src="C:\Users\hecot\Desktop\QQ截图20221203194649.png" alt="QQ截图20221203194649" style="zoom:50%;" />
+![](https://raw.githubusercontent.com/hecoter/blog/main/imags/QQ%E6%88%AA%E5%9B%BE20221203194445.png)
+
+![](https://raw.githubusercontent.com/hecoter/blog/main/imags/QQ%E6%88%AA%E5%9B%BE20221203194649.png)
+
+
 
 ## 4 CLI版 使用
 
