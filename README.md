@@ -63,6 +63,10 @@ python version ≥ 3.7
 
 按照界面提示输入即可
 
+[点此下载](https://files.catbox.moe/zjwahq.zip)
+
+
+
 <img src="https://raw.githubusercontent.com/hecoter/blog/main/imags/QQ%E6%88%AA%E5%9B%BE20221203194411.png" style="zoom:50%;" />
 
 <img src="C:\Users\hecot\Desktop\QQ截图20221203194424.png" alt="QQ截图20221203194424" style="zoom:50%;" />
@@ -74,6 +78,8 @@ python version ≥ 3.7
 <img src="C:\Users\hecot\Desktop\QQ截图20221203194649.png" alt="QQ截图20221203194649" style="zoom:50%;" />
 
 ## 4 CLI版 使用
+
+安装：
 
 ```
 pip install --upgrade hm3u8dl_cli
