@@ -63,7 +63,7 @@ python version ≥ 3.7
 
 按照界面提示输入即可
 
-[点此下载](https://files.catbox.moe/zjwahq.zip)
+[点此下载](https://files.catbox.moe/945am0.zip)
 
 
 
