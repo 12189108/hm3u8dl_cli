@@ -4,6 +4,10 @@ python version ≥ 3.7
 
 推荐在终端中使用，在pycharm中使用时请设置 `在输出控制台中模拟终端`
 
+视频介绍：
+
+<iframe src="//player.bilibili.com/player.html?aid=903264758&bvid=BV1hP4y1975u&cid=911754111&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
 ## 1 特性
 
 解密类：
@@ -61,9 +65,11 @@ python version ≥ 3.7
 
 ## 3 GUI 版使用
 
+
+
 按照界面提示输入即可
 
-[点此下载](https://files.catbox.moe/945am0.zip)
+[点此下载](https://files.catbox.moe/zjwahq.zip)
 
 
 
@@ -74,10 +80,6 @@ python version ≥ 3.7
 
 
 
-
-
-
-<img src="C:\Users\hecot\Desktop\QQ截图20221203194430.png" alt="QQ截图20221203194430" style="zoom:50%;" />
 
 <img src="https://raw.githubusercontent.com/hecoter/blog/main/imags/QQ%E6%88%AA%E5%9B%BE20221203194430.png" style="zoom:50%;" />
 
