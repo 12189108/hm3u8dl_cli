@@ -6,6 +6,8 @@ python version ≥ 3.7
 
 视频介绍：
 
+一款功能强大的m3u8下载器 hm3u8dl : https://www.bilibili.com/video/BV1hP4y1975u
+
 <iframe src="//player.bilibili.com/player.html?aid=903264758&bvid=BV1hP4y1975u&cid=911754111&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
 ## 1 特性
