@@ -39,7 +39,7 @@ class FastRequests:
             t.start()
 
         # tqdm 版简略进度条
-        with tqdm(total=ALL_COUNT, desc='', leave=False, unit='个', unit_scale=True,) as pbar:
+        with tqdm(total=ALL_COUNT, desc='', leave=False, unit=' segments', unit_scale=True,) as pbar:
             while DONE_COUNT < ALL_COUNT:
                 current_p = pbar.n
                 end_time = time.time()

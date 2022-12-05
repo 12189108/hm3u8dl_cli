@@ -18,7 +18,7 @@ def main(argv=None):
     parser.add_argument("-iv", default=None, help='iv')
     parser.add_argument("-nonce", default=None, help='nonce 可能用到的第二个key')
     parser.add_argument("-enable_del", default=True, help='下载完删除多余文件')
-    parser.add_argument("-merge_mode", default=1, type=int,help='1:二进制合并，2：二进制合并完成后用ffmpeg转码，3：用ffmpeg合并转码')
+    parser.add_argument("-merge_mode", default=3, type=int,help='1:二进制合并，2：二进制合并完成后用ffmpeg转码，3：用ffmpeg合并转码')
     parser.add_argument("-base_uri", default=None, help="解析时的baseuri")
     parser.add_argument("-threads", default=16,type=int,help='线程数')
     parser.add_argument("-headers", default={},help='请求头')

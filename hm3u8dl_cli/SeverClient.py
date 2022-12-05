@@ -53,7 +53,7 @@ def run():
         'port': 8000,
         'host': '127.0.0.1'
     }
-    uvicorn_run(app, host=CONFIG['host'], port=CONFIG['port'])
+    uvicorn_run(app, host=CONFIG['host'], port=CONFIG['port'],log_level=30)
 
 if __name__ == '__main__':
     run()

@@ -54,6 +54,7 @@ class Merge:  # 合并视频
                     f.write('\n')
                 f.close()
             cmd = f'{self.toolsPath["ffmpeg"]} -f concat -safe 0 -i "{self.temp_dir + "/filelist.txt"}" -c copy "{self.temp_dir + ".mp4"}" -loglevel panic'
+
             subprocess.call(cmd,shell=True)
 
             if not os.path.exists(self.temp_dir + ".mp4"):

@@ -22,7 +22,7 @@ def m3u8download(
         iv=None,
         nonce=None,
         enable_del=True,
-        merge_mode=1,
+        merge_mode=3,
         base_uri=None,
         headers={},
         work_dir=os.path.abspath('') + '/Downloads',
@@ -95,7 +95,7 @@ def m3u8download(
             m3u8InfoObj.title,
             Util.timeFormat(m3u8InfoObj._['durations']),
             m3u8InfoObj.method,
-            m3u8InfoObj._['tsinfo']
+            m3u8InfoObj._['tsinfo']['tsinfo']
         )
         #上传信息
         if m3u8InfoObj.server:
@@ -130,7 +130,6 @@ def m3u8download(
                 Util.delFile(m3u8InfoObj._['temp_dir'])
             if Util.isWidevine(m3u8InfoObj.method):
                 Util.delFile(m3u8InfoObj._['temp_dir'] + '.mp4')
-        print()
         if os.path.exists(m3u8InfoObj._['temp_dir'] + '.mp4'):
             END = True
         else:

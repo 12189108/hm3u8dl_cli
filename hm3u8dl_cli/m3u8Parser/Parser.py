@@ -62,6 +62,11 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
     def preload_headers(self):
         if self.m3u8InfoObj.headers == {}:
             self.m3u8InfoObj.headers['user-agent'] = Util.randomUA()
+        else:
+            try:
+                self.m3u8InfoObj.headers['referer'] = '/'.join(self.m3u8InfoObj.m3u8url.split('/')[:3])
+            except:
+                pass
 
         self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成, {json.dumps(self.m3u8InfoObj.headers)}')
 
@@ -183,9 +188,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成,{json.dumps(self.m3u8InfoObj.nonce)}')
 
     def preload_tsinfo(self):
-
         tsurl = self.segments[0]['uri']
-
         self.m3u8InfoObj.ts = Util.toBytes(tsurl, self.m3u8InfoObj.headers)
         self.m3u8InfoObj.ts = Decrypt(self.m3u8InfoObj)
         if type(self.m3u8InfoObj.ts) != bytes:
@@ -193,11 +196,16 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         with open(f'{self.m3u8InfoObj.work_dir}/{self.m3u8InfoObj.title}_tsinfo.ts', 'wb') as f:
             f.write(self.m3u8InfoObj.ts)
             f.close()
-        del self.m3u8InfoObj.ts
-        self.tsinfo = tsInfo(f'{self.m3u8InfoObj.work_dir}/{self.m3u8InfoObj.title}_tsinfo.ts')
 
+        del self.m3u8InfoObj.ts
+        tsinfo = tsInfo(f'{self.m3u8InfoObj.work_dir}/{self.m3u8InfoObj.title}_tsinfo.ts')
+        thumbPicPath = Util.getThumbPic(f"{self.m3u8InfoObj.work_dir}/{self.m3u8InfoObj.title}_tsinfo.ts")
         Util.delFile(f'{self.m3u8InfoObj.work_dir}/{self.m3u8InfoObj.title}_tsinfo.ts')
-        self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成,{self.tsinfo}')
+        self.tsinfo = {
+            'tsinfo':tsinfo,
+            'thumbPicPath':thumbPicPath
+        }
+        self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成,{json.dumps(self.tsinfo)}')
         return self.tsinfo
 
     def preload_threads(self):
