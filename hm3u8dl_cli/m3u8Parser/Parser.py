@@ -38,7 +38,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
 
     def preload_m3u8url(self):
 
-        # self.m3u8InfoObj.m3u8url = xet_decrypt(self.m3u8InfoObj.m3u8url)
+
         self.m3u8InfoObj.m3u8url = urlmagic_decrypt(self.m3u8InfoObj.m3u8url)
         self.m3u8InfoObj.m3u8url = cctv_decrypt(self.m3u8InfoObj.m3u8url)
         self.m3u8InfoObj.m3u8url = bjcloudvod_decrypt(self.m3u8InfoObj.m3u8url)
@@ -148,12 +148,10 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成,{json.dumps(self.m3u8InfoObj.method)}')
 
     def preload_key(self):
-
         if self.m3u8InfoObj.key is not None:  # 自定义key
             self.m3u8InfoObj.key = Util.toBytes(self.m3u8InfoObj.key)
         else:
             self.m3u8InfoObj.key = self.m3u8obj.data['keys'][-1]['uri']
-
 
             # 可用的链接
             if type(self.m3u8InfoObj.key) == str and 'drm.vod2.myqcloud.com/getlicense/v1' in self.m3u8InfoObj.key:
@@ -164,6 +162,9 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
                 self.m3u8InfoObj.key = self.m3u8obj.base_uri + self.m3u8InfoObj.key
 
             self.m3u8InfoObj.key = Util.toBytes(self.m3u8InfoObj.key)
+            if len(self.m3u8InfoObj.key) != 16:
+                self.m3u8InfoObj.key = None
+                print('A wrong key.')
 
         self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} 执行完成,{self.m3u8InfoObj.key}')
 
@@ -191,6 +192,7 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
         tsurl = self.segments[0]['uri']
         self.m3u8InfoObj.ts = Util.toBytes(tsurl, self.m3u8InfoObj.headers)
         self.m3u8InfoObj.ts = Decrypt(self.m3u8InfoObj)
+        # print(self.m3u8InfoObj.ts)
         if type(self.m3u8InfoObj.ts) != bytes:
             raise '分片预加载错误'
         with open(f'{self.m3u8InfoObj.work_dir}/{self.m3u8InfoObj.title}_tsinfo.ts', 'wb') as f:
@@ -354,12 +356,13 @@ class Parser:  # 解析m3u8内容，返回一大堆信息
                     f'{sys._getframe().f_code.co_name.ljust(20)} SAMPLE-AES-CTR 文件头下载完成,{init_content}')
 
             elif self.m3u8InfoObj.method == 'SAMPLE-AES':
-                init = self.segments[0]['init_section']['uri']
-                with open(self.temp_dir + '.mp4', 'wb') as f:
-                    init_content = requests.get(init).content
-                    f.write(init_content)
-                    f.close()
-                self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} SAMPLE-AES 文件头下载完成,{init_content}')
+                if 'init_section' in self.segments[0]:
+                    init = self.segments[0]['init_section']['uri']
+                    with open(self.temp_dir + '.mp4', 'wb') as f:
+                        init_content = requests.get(init).content
+                        f.write(init_content)
+                        f.close()
+                    self.logger.info(f'{sys._getframe().f_code.co_name.ljust(20)} SAMPLE-AES init_section 下载完成 ,{init_content}')
 
             elif self.m3u8InfoObj.method == 'copyrightDRM':
                 copyrightDRM_decrypt(self.m3u8InfoObj.m3u8url, self.m3u8InfoObj.title, base64.b64encode(self.m3u8InfoObj.key).decode())

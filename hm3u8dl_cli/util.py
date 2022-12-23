@@ -13,6 +13,7 @@ import requests
 from urllib import parse
 from shutil import rmtree
 
+
 from rich.console import Console
 from rich.table import Table
 import logging
@@ -514,8 +515,6 @@ class Util:
         subprocess.call(cmd, shell=True)
         return outputFilePath
 
-
-
     @classmethod
     def aliPlayAuth(cls,n, rand, plaintext):
         """
@@ -532,5 +531,27 @@ class Util:
 
         return unpad(cryptor.decrypt(base64.b64decode(plaintext))).decode('utf-8')
 
+    @classmethod
+    def extractPES(cls,tsFileContent:bytes):
+        """ 抽取PES
+        """
+
+        # 初始化空列表用于存放pes
+        pes_list = []
+
+        # 逐行读取ts文件
+        for line in tsFileContent.split(b'\n'):
+            # 使用正则表达式查找pes包
+            match = re.search(b'\x00\x00\x01\xE0', line)
+            if match:
+                # 找到pes包，将其加入列表
+                pes_list.append(line)
+        # b'\n'.join(pes_list)
+        return pes_list
+
+
 if __name__ == '__main__':
-    pass
+    with open(r"C:\Users\hecot\Desktop\Downloads\v.f220\video\000024.ts",'rb') as f:
+        tsFileContent = f.read()
+    pes_list = Util.extractPES(tsFileContent)
+    print(pes_list[0])
