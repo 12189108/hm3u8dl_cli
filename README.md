@@ -1,8 +1,25 @@
 # hm3u8dl python m3u8视频下载器
 
-python version ≥ 3.7
+<p align="center">
+    <a href="https://img.shields.io/badge/python-%E2%89%A5v3.7-blue" style="text-decoration:none" >
+        <img alt="GitHub Python version" src="https://img.shields.io/badge/python-%E2%89%A5v3.7-blue">
+    </a>
+    <a href="https://github.com/hecoter/hm3u8dl_cli/stargazers" style="text-decoration:none" >
+        <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/hecoter/hm3u8dl_cli">
+    </a>
+    <a href="https://github.com/hecoter/hm3u8dl_cli/network" style="text-decoration:none" >
+        <img alt="GitHub forks" src="https://img.shields.io/github/forks/hecoter/hm3u8dl_cli">
+    </a>
+    <a href="https://github.com/hecoter/hm3u8dl_cli/issues" style="text-decoration:none">
+        <img alt="GitHub issues" src="https://img.shields.io/github/issues/hecoter/hm3u8dl_cli">
+    </a>
+    <a href="https://github.com/hecoter/hm3u8dl_cli/blob/main/LICENSE" style="text-decoration:none" >
+        <img alt="GitHub" src="https://img.shields.io/github/license/hecoter/hm3u8dl_cli">
+    </a>
+</p>
 
-推荐在终端中使用，在pycharm中使用时请设置 `在输出控制台中模拟终端`
+
+两行代码下载m3u8视频流
 
 视频介绍：
 
@@ -37,11 +54,11 @@ python version ≥ 3.7
 
 9. 支持下载出错自动跳过
 
-9. 随机请求头
+10. 随机请求头
 
-9. GUI 版本正在测试
+11. GUI 版本正在测试
 
-   
+    
 
 ## 2 参数介绍
 
@@ -65,11 +82,25 @@ python version ≥ 3.7
   -proxy        代理：{'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
 ```
 
-## 3 GUI 版使用
+## 3 命令行版使用
 
+https://gitee.com/hecoter/hm3u8dl_cli/releases 或 https://github.com/hecoter/hm3u8dl_cli/releases 下载CLI版
 
+在终端中进行调用：
 
-按照界面提示输入即可
+```
+.\hm3u8dl_cli_v0.4.9.exe "https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8"
+```
+
+```
+.\hm3u8dl_cli_v0.4.9.exe "https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8" -title "title"
+```
+
+…………
+
+## *4 GUI 版使用*
+
+*不推荐使用*
 
 <img src="https://gitee.com/hecoter/blog/raw/master/imags/QQ%E6%88%AA%E5%9B%BE20221207202346.png" style="zoom:50%;" />
 
@@ -79,7 +110,7 @@ python version ≥ 3.7
 
 <img src="https://gitee.com/hecoter/blog/raw/master/imags/0.png" style="zoom:50%;" />
 
-## 4 CLI版 使用
+## 5 python 用户使用
 
 安装：
 
@@ -87,11 +118,14 @@ python version ≥ 3.7
 pip install --upgrade hm3u8dl_cli
 ```
 
+使用 1：
+
 ```
+from hm3u8dl_cli import m3u8download
 m3u8download('https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8',title='132')
 ```
 
-或者采用实例化对象的方法进行使用：
+使用 2：
 
 ```
 from hm3u8dl_cli.util import M3U8InfoObj
@@ -126,7 +160,7 @@ m3u8download(m3u8url,merge_mode=3)
 from hm3u8dl_cli import m3u8download
 m3u8url = 'https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8'
 title = '标题'
-m3u8download(m3u8url)
+m3u8download(m3u8url,title=title)
 ```
 
 #### method 示例（选填）
